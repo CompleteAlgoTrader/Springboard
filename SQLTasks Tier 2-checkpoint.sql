@@ -80,6 +80,7 @@ who signed up. Try not to use the LIMIT clause for your solution. */
 SELECT firstname, surname
 FROM `Members`
 WHERE joindate IS NOT NULL
+AND joindate IN (SELECT MAX(joindate) FROM Members)
 ORDER BY joindate DESC;
 
 /* Q7: Produce a list of all members who have used a tennis court.
@@ -94,6 +95,18 @@ USING(memid)
 LEFT JOIN Facilities
 USING (facid)
 WHERE facid IN (0, 1)
+
+ORDER BY fullname;
+
+** ALTERNATIVE ANSWER TO Q7 **
+
+SELECT DISTINCT CONCAT_WS(' ',firstname, surname) AS fullname, name
+FROM Bookings
+LEFT JOIN Members
+USING(memid)
+LEFT JOIN Facilities
+USING (facid)
+WHERE name LIKE '%Tennis Court%'
 
 ORDER BY fullname;
 
@@ -168,24 +181,48 @@ ORDER BY revenue DESC;
 
 /* Q11: Produce a report of members and who recommended them in alphabetic surname,firstname order */
 
+Explanation of the utility of a Left Outer Join: https://docs.microsoft.com/en-us/power-query/merge-queries-left-outer
+
 SELECT Members.firstname AS MemberFirstName, Members.surname AS MemberSurname, recommendations.firstname AS RecFirstName, recommendations.surname AS RecSurname 
 FROM Members
 LEFT OUTER JOIN Members AS recommendations
 ON recommendations.memid = Members.recommendedby
 ORDER BY MemberSurname, MemberFirstName
 
+** ALTERNATIVE ANSWER TO Q11 **
+SELECT Members.firstname AS MemberFirstName, Members.surname AS MemberSurname, recommendations.firstname AS RecFirstName, recommendations.surname AS RecSurname
+FROM Members
+INNER JOIN Members AS recommendations ON recommendations.memid = Members.recommendedby
+ORDER BY MemberSurname, MemberFirstName
+
 /* Q12: Find the facilities with their usage by member, but not guests */
 
-SELECT facid, memid, COUNT(memid)
+SELECT Facilities.name AS Name, CONCAT_WS(' ', Members.firstname, Members.surname) AS Member, COUNT(Facilities.name)
 FROM Bookings
-WHERE memid NOT IN (0)
-GROUP BY facid, memid;
+INNER JOIN Members ON Members.memid = Bookings.memid
+INNER JOIN Facilities ON Facilities.facid = Bookings.facid
+WHERE Bookings.memid NOT IN (0)
+GROUP BY Name, Member
+ORDER BY Name, Member;
 
 /* Q13: Find the facilities usage by month, but not guests */
 
-SELECT facid, EXTRACT(
-MONTH FROM starttime ) AS month, COUNT(EXTRACT(
-MONTH FROM starttime )) AS monthcount
+SELECT Facilities.name AS Name, CONCAT_WS(' ', Members.firstname, Members.surname) AS Member, COUNT(Facilities.name) AS Bookings,
+sum(case when month(starttime) = 1 then 1 else 0 end) as Jan,
+sum(case when month(starttime) = 2 then 1 else 0 end) as Feb,
+sum(case when month(starttime) = 3 then 1 else 0 end) as Mar,
+sum(case when month(starttime) = 4 then 1 else 0 end) as Apr,
+sum(case when month(starttime) = 5 then 1 else 0 end) as May,
+sum(case when month(starttime) = 6 then 1 else 0 end) as Jun,
+sum(case when month(starttime) = 7 then 1 else 0 end) as Jul,
+sum(case when month(starttime) = 8 then 1 else 0 end) as Aug,
+sum(case when month(starttime) = 9 then 1 else 0 end) as Sep,
+sum(case when month(starttime) = 10 then 1 else 0 end) as Oct,
+sum(case when month(starttime) = 11 then 1 else 0 end) as Nov,
+sum(case when month(starttime) = 12 then 1 else 0 end) as Decm
 FROM Bookings
-WHERE memid <>0
-GROUP BY facid, month
+INNER JOIN Members ON Members.memid = Bookings.memid
+INNER JOIN Facilities ON Facilities.facid = Bookings.facid
+WHERE Bookings.memid NOT IN (0)
+GROUP BY Name, Member
+ORDER BY Name, Member;
