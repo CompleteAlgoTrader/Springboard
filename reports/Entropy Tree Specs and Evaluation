@@ -1,0 +1,78 @@
+** Version 1.0 Last Updated 1/28/2022 11:10 AM
+
+Entropy Decision Tree for Loan Classification Specifications:
+(random_state=42, 
+criterion = 'entropy', 
+min_samples_split = 46,
+min_samples_leaf = 2, 
+max_depth = 3, 
+class_weight = {0: 0.7612612612612613, 1: 1})
+                                                 
+Feature Importance:
+[(0.6617593608502509, 'int_rate'),
+ (0.22521955349859674, 'last_credit_pull_d'),
+ (0.06088230360915024, 'home_ownership_MORTGAGE'),
+ (0.05213878204200208, 'loan_amnt'),
+ (0.0, 'total_bal_ex_mort'),
+ (0.0, 'tot_hi_cred_lim'),
+ (0.0, 'tot_bal_tot_hi_cred_lim_ratio'),
+ (0.0, 'tot_bal_income_ratio'),
+ (0.0, 'tax_liens'),
+ (0.0, 'purpose_vacation'),
+ (0.0, 'purpose_other'),
+ (0.0, 'purpose_moving'),
+ (0.0, 'purpose_medical'),
+ (0.0, 'purpose_major_purchase'),
+ (0.0, 'purpose_house'),
+ (0.0, 'purpose_energy'),
+ (0.0, 'purpose_credit_card'),
+ (0.0, 'purpose_consolidation'),
+ (0.0, 'purpose_car'),
+ (0.0, 'pub_rec_bankruptcies'),
+ (0.0, 'mths_since_recent_inq'),
+ (0.0, 'mths_since_last_delinq'),
+ (0.0, 'installment'),
+ (0.0, 'inq_last_12m'),
+ (0.0, 'home_ownership_RENT'),
+ (0.0, 'home_ownership_OWN'),
+ (0.0, 'home_ownership_NONE'),
+ (0.0, 'fico_avg'),
+ (0.0, 'emp_length_No Employment'),
+ (0.0, 'emp_length_< 1 year'),
+ (0.0, 'emp_length_9 years'),
+ (0.0, 'emp_length_8 years'),
+ (0.0, 'emp_length_7 years'),
+ (0.0, 'emp_length_6 years'),
+ (0.0, 'emp_length_5 years'),
+ (0.0, 'emp_length_4 years'),
+ (0.0, 'emp_length_3 years'),
+ (0.0, 'emp_length_2 years'),
+ (0.0, 'emp_length_10+ years'),
+ (0.0, 'earliest_cr_line'),
+ (0.0, 'delinq_2yrs'),
+ (0.0, 'chargeoff_within_12_mths'),
+ (0.0, 'annual_inc'),
+ (0.0, 'acc_now_delinq')]
+ 
+ Performance Evaluation:
+ 
+ Classification Report:
+               precision    recall  f1-score   support
+
+           0       0.91      0.42      0.57    133050
+           1       0.27      0.83      0.41     34135
+
+    accuracy                           0.50    167185
+   macro avg       0.59      0.62      0.49    167185
+weighted avg       0.78      0.50      0.54    167185
+
+Normalized Confusion Matrix:
+                        Predicted Labels
+True Labels          0            1
+             0      0.42       0.58
+             1      0.17       0.83
+             
+             
+ROC AUC = 0.69
+
+Precision-Recall AP = 0.33
