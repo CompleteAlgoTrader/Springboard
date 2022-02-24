@@ -1,0 +1,39 @@
+Part 2 ‐ Experiment and metrics design
+
+The neighboring cities of Gotham and Metropolis have complementary circadian rhythms: on
+weekdays, Ultimate Gotham is most active at night, and Ultimate Metropolis is most active
+during the day. On weekends, there is reasonable activity in both cities.
+
+However, a toll bridge, with a two way toll, between the two cities causes driver partners to tend
+to be exclusive to each city. The Ultimate managers of city operations for the two cities have
+proposed an experiment to encourage driver partners to be available in both cities, by
+reimbursing all toll costs.
+
+
+1) What would you choose as the key measure of success of this experiment in
+encouraging driver partners to serve both cities, and why would you choose this metric?
+A: 
+The measure of success for this experiment would be the median number of completed assignments in a 24 hour period. 
+
+The idea behind this initiative is that the two cities have different peak demand times (based on their circadian rhythms), so it would be optimally efficient to have most of the driver partners be available in each city during their respective peak demand times. This will allow more customers to be serviced. If the initiative is successful, we would observe a statistically significant increase in the median number of completed assignments in a 24 hour period (considering number of completed assignments in both cities). If the initiative does not achieve it's intended purpose of optimizing driver partner availability, then we would not observe a statistically significant increase in this metric. The median value is used (as opposed to the mean value) in order to test for a result that is robust to outliers, such as seasonal or cyclical fluctuations.
+
+2) Describe a practical experiment you would design to compare the effectiveness of the
+proposed change in relation to the key measure of success. Please provide details on:
+
+a) how you will implement the experiment
+A:  
+   1. Collect a list of all driver partners in both cities. 
+   2. Create two random samples of driver partners. One sample will be offered complete reimbursement for toll costs, the other will not.
+   3. Track the daily number of completed assignments across both samples for some time (ideally a full year to adjust for seasonal fluctuations).
+   4. Calculate the median number of completed assignments for both samples. Calculate the observed difference in median number of completed assignments.
+   5. Assume that reimbursement does not have an impact on median number of completed assignments (null hypothesis).
+   6. Run a permutation test to collect a null distribution of differences in median number of completed assignments.
+   7. Find the p-value for the observed difference in the null distribution. Evaluate the statistical significance of the relationship between median completed daily assignments and reimbursement based on the resultant p-value.
+
+b) what statistical test(s) you will conduct to verify the significance of the
+observation
+A: I would use a permutation test.
+
+c) how you would interpret the results and provide recommendations to the city
+operations team along with any caveats.
+A: If the p-value of the permutation test is small enough (less than 0.05), then the null hypothesis would be rejected, and we would assume that there is a statistically significant relationship between reimbursement and the median daily completed assignments. I would recommend the city to adopt the reimbursement of toll fees and I would suggest an ongoing monitoring of the median daily completed assignments to validate the results or adjust as necessary.
